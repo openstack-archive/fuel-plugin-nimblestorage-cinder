@@ -1,0 +1,527 @@
+attributes:
+  metadata:
+    # Settings group can be one of "general", "security", "compute", "network",
+    # "storage", "logging", "openstack_services" and "other".
+    group: 'storage'
+# Number of Backends. Is there a dynamic way to build UI without this?
+  no_backends:
+    type: 'select'
+    weight: 11 
+    value: '1'
+    label: 'Nimble backends'
+    description: 'Number of Nimble backends'
+    values:
+      - data: '1'
+        label: '1'
+      - data: '2'
+        label: '2'
+      - data: '3'
+        label: '3'
+# Grouping selection
+  nimble_grouping:
+    value: false
+    label: 'Group all backends to the same volume type?'
+    description: 'Specify if all Nimble storage backends needs to be grouped to a volume type'
+    weight: 12 
+    type: 'checkbox'
+# Group Backend details
+  nimble_group_backend_name:
+    value: 'cinder_nimble'
+    label: 'Group Backend Name'
+    description: '"volume_backend_name: for Nimble storage backends group in cinder'
+    weight: 13
+    type: "text"
+    restrictions:
+      - condition: "settings:cinder_nimble.nimble_grouping.value == false"
+        action: 'hide'
+  nimble_group_backend_type:
+    value: 'cinder_nimble'
+    label: 'Group Backend Type'
+    description: 'Type for Nimble storage backends group in cinder'
+    weight: 14
+    type: "text"
+    restrictions:
+      - condition: "settings:cinder_nimble.nimble_grouping.value == false"
+        action: 'hide'
+  nimble_group_default_backend:
+    type: 'checkbox'
+    value: false 
+    weight: 15
+    label: 'Set as Default Type?'
+    description: 'Set the Nimble backend group as the default type' 
+    restrictions:
+      - condition: "settings:cinder_nimble.nimble_grouping.value == false"
+        action: 'hide'
+  nimble_group_encryption:
+    value: false 
+    label: 'Encryption enabled?'
+    description: 'Specify if Nimble storage backends needs to be encypted'
+    weight: 16
+    type: 'checkbox'
+    restrictions:
+      - condition: "settings:cinder_nimble.nimble_grouping.value == false"
+        action: 'hide'
+  nimble_group_multi_init:
+    value: false 
+    label: 'Multi-Initiator enabled?'
+    description: 'Specify if Nimble storage multi-initiator needs to be enabled'
+    weight: 17
+    type: 'checkbox'
+    restrictions:
+      - condition: "settings:cinder_nimble.nimble_grouping.value == false"
+        action: 'hide'
+  nimble_group_perfpol:
+    value: ""
+    type: "text"
+    weight: 18
+    label: "Performance policy name"
+    description: "Performance policy name for Nimble Storage backends"
+    restrictions:
+      - condition: "settings:cinder_nimble.nimble_grouping.value == false"
+        action: 'hide'
+      - condition: "settings:cinder_nimble.nimble_group_perfpol.value == ''"
+        message: "Performance policy cannot be unset by setting this field blank. Old value will be retained. Delete extra spec value manually if needed."
+        action: 'none'
+# Individual Backend details
+  nimble1_backend_divider:
+    value: '' 
+    label: "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    description: ''
+    weight: 19 
+    type: "hidden"
+  nimble1_backend_label:
+    value: '' 
+    label: 'Nimble Backend #1'
+    description: 'Details for Nimble Backend #1'
+    weight: 21
+    type: "radio"
+  nimble1_backend_name:
+    value: 'cinder_nimble1'
+    label: 'Backend Name'
+    description: '"volume_backend_name" for Nimble storage backend in cinder'
+    weight: 22
+    type: "text"
+    restrictions:
+      - condition: "settings:cinder_nimble.nimble_grouping.value == true"
+        action: 'hide'
+  nimble1_backend_type:
+    value: 'cinder_nimble1'
+    label: 'Backend Type'
+    description: 'Type for Nimble storage backend in cinder'
+    weight: 23
+    type: "text"
+    restrictions:
+      - condition: "settings:cinder_nimble.nimble_grouping.value == true"
+        action: 'hide'
+  nimble1_default_backend:
+    type: 'checkbox'
+    value: false 
+    weight: 24 
+    label: 'Set as Default Type?'
+    description: 'Set the Nimble backend #1 as the default type' 
+    restrictions:
+      - condition: "settings:cinder_nimble.nimble_grouping.value == true"
+        action: 'hide'
+      - condition: "settings:cinder_nimble.nimble2_default_backend.value == true"
+        action: 'disable'
+        message: "Backend #2 is selected as default type."
+      - condition: "settings:cinder_nimble.nimble3_default_backend.value == true"
+        action: 'disable'
+        message: "Backend #3 is selected as default type."
+  nimble1_backend_protocol:
+    value: 'iSCSI'
+    values:
+        - data: "iSCSI"
+          label: "iSCSI"
+          description: "Enables iSCSI protocol for block storage volumes"
+        - data: "FC"
+          label: "Fibre Channel"
+          description: "Enables Fibre Channel protocol for block storage volumes"
+    label: 'Storage Protocol to be used with Nimble Array Backend'
+    description: ''
+    weight: 25
+    type: "radio"
+  nimble1_san_ip:
+    value: ""
+    label: 'Nimble Storage Management IP (san_ip)'
+    description: 'The hostname (or IP address) for Nimble Storage Management'
+    weight: 26
+    type: "text"
+    regex:
+      source: '^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$'
+      error: "Error: Enter in regular IP address dot notation"
+  nimble1_login:
+    value: ""
+    type: "text"
+    weight: 27
+    label: "User ID for Nimble Storage"
+    description: "Nimble Storage username/ID (with admin privilages)"
+    regex:
+      source: '^(?!\s*$).+'
+      error: "Error: Username/ID cannot be blank"
+  nimble1_password:
+    value: ""
+    type: "password"
+    weight: 28
+    label: "Password for Nimble Storage"
+    description: "Nimble Storage password for username/ID above"
+    regex:
+      source: '^(?!\s*$).+'
+      error: "Error: Password cannot be blank"
+  nimble1_encryption:
+    value: false 
+    label: 'Encryption enabled?'
+    description: 'Specify if Nimble storage backend needs to be encypted'
+    weight: 29
+    type: 'checkbox'
+    restrictions:
+      - condition: "settings:cinder_nimble.nimble_grouping.value == true"
+        action: 'hide'
+  nimble1_multi_init:
+    value: false 
+    label: 'Multi-Initiator enabled?'
+    description: 'Specify if Nimble storage multi-initiator needs to be enabled'
+    weight: 30
+    type: 'checkbox'
+    restrictions:
+      - condition: "settings:cinder_nimble.nimble_grouping.value == true"
+        action: 'hide'
+  nimble1_perfpol:
+    value: ""
+    type: "text"
+    weight: 31
+    label: "Performance policy name"
+    description: "Performance policy name for Nimble Storage backend"
+    restrictions:
+      - condition: "settings:cinder_nimble.nimble_grouping.value == true"
+        action: 'hide'
+      - condition: "settings:cinder_nimble.nimble1_perfpol.value == ''"
+        message: "Performance policy cannot be unset by setting this field blank. Old value will be retained. Delete extra spec value manually if needed."
+        action: 'none'
+  nimble2_backend_divider:
+    value: '' 
+    label: "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    description: ''
+    weight: 32 
+    type: "hidden"
+    restrictions:
+      - condition: "settings:cinder_nimble.no_backends.value == '1'"
+        action: 'hide'
+  nimble2_backend_label:
+    value: '' 
+    label: 'Nimble Backend #2'
+    description: 'Details for Nimble Backend #2'
+    weight: 34
+    type: "radio"
+    restrictions:
+      - condition: "settings:cinder_nimble.no_backends.value == '1'"
+        action: 'hide'
+  nimble2_backend_name:
+    value: 'cinder_nimble2'
+    label: 'Backend Name'
+    description: '"volume_backend_name" for Nimble storage backend in cinder'
+    weight: 35 
+    type: "text"
+    restrictions:
+      - condition: "settings:cinder_nimble.no_backends.value == '1'"
+        action: 'hide'
+      - condition: "settings:cinder_nimble.nimble_grouping.value == true"
+        action: 'hide'
+  nimble2_backend_type:
+    value: 'cinder_nimble2'
+    label: 'Backend Type'
+    description: 'Type for Nimble storage backend in cinder'
+    weight: 36
+    type: "text"
+    restrictions:
+      - condition: "settings:cinder_nimble.no_backends.value == '1'"
+        action: 'hide'
+      - condition: "settings:cinder_nimble.nimble_grouping.value == true"
+        action: 'hide'
+  nimble2_default_backend:
+    type: 'checkbox'
+    value: false 
+    weight: 37
+    label: 'Set as Default Type?'
+    description: 'Set the Nimble backend #2 as the default type' 
+    restrictions:
+      - condition: "settings:cinder_nimble.no_backends.value == '1'"
+        action: 'hide'
+      - condition: "settings:cinder_nimble.nimble_grouping.value == true"
+        action: 'hide'
+      - condition: "settings:cinder_nimble.nimble1_default_backend.value == true"
+        action: 'disable'
+        message: "Backend #1 is selected as default type."
+      - condition: "settings:cinder_nimble.nimble3_default_backend.value == true"
+        action: 'disable'
+        message: "Backend #3 is selected as default type."
+  nimble2_backend_protocol:
+    value: 'iSCSI'
+    values:
+        - data: "iSCSI"
+          label: "iSCSI"
+          description: "Enables iSCSI protocol for block storage volumes"
+        - data: "FC"
+          label: "Fibre Channel"
+          description: "Enables Fibre Channel protocol for block storage volumes"
+    label: 'Storage Protocol to be used with Nimble Array Backend'
+    description: ''
+    weight: 38 
+    type: "radio"
+    restrictions:
+      - condition: "settings:cinder_nimble.no_backends.value == '1'"
+        action: 'hide'
+  nimble2_san_ip:
+    value: ""
+    label: 'Nimble Storage Management IP (san_ip)'
+    description: 'The hostname (or IP address) for Nimble Storage Management'
+    weight: 39
+    type: "text"
+    regex:
+      source: '^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$'
+      error: "Error: Enter in regular IP address dot notation"
+    restrictions:
+      - condition: "settings:cinder_nimble.no_backends.value == '1'"
+        action: 'hide'
+  nimble2_login:
+    value: ""
+    type: "text"
+    weight: 40
+    label: "User ID for Nimble Storage"
+    description: "Nimble Storage username/ID (with admin privilages)"
+    regex:
+      source: '^(?!\s*$).+'
+      error: "Error: Username/ID cannot be blank"
+    restrictions:
+      - condition: "settings:cinder_nimble.no_backends.value == '1'"
+        action: 'hide'
+  nimble2_password:
+    value: ""
+    type: "password"
+    weight: 41
+    label: "Password for Nimble Storage"
+    description: "Nimble Storage password for username/ID above"
+    regex:
+      source: '^(?!\s*$).+'
+      error: "Error: Password cannot be blank"
+    restrictions:
+      - condition: "settings:cinder_nimble.no_backends.value == '1'"
+        action: 'hide'
+  nimble2_encryption:
+    value: false 
+    label: 'Encryption enabled?'
+    description: 'Specify if Nimble storage backend needs to be encypted'
+    weight: 42
+    type: 'checkbox'
+    restrictions:
+      - condition: "settings:cinder_nimble.no_backends.value == '1'"
+        action: 'hide'
+      - condition: "settings:cinder_nimble.nimble_grouping.value == true"
+        action: 'hide'
+  nimble2_multi_init:
+    value: false 
+    label: 'Multi-Initiator enabled?'
+    description: 'Specify if Nimble storage multi-initiator needs to be enabled'
+    weight: 43
+    type: 'checkbox'
+    restrictions:
+      - condition: "settings:cinder_nimble.no_backends.value == '1'"
+        action: 'hide'
+      - condition: "settings:cinder_nimble.nimble_grouping.value == true"
+        action: 'hide'
+  nimble2_perfpol:
+    value: ""
+    type: "text"
+    weight: 44
+    label: "Performance policy name"
+    description: "Performance policy name for Nimble storage backend"
+    restrictions:
+      - condition: "settings:cinder_nimble.no_backends.value == '1'"
+        action: 'hide'
+      - condition: "settings:cinder_nimble.nimble_grouping.value == true"
+        action: 'hide'
+      - condition: "settings:cinder_nimble.nimble2_perfpol.value == ''"
+        message: "Performance policy cannot be unset by setting this field blank. Old value will be retained. Delete extra spec value manually if needed."
+        action: 'none'
+  nimble3_backend_divider:
+    value: '' 
+    label: "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    description: ''
+    weight: 45 
+    type: "hidden"
+    restrictions:
+      - condition: "settings:cinder_nimble.no_backends.value == '1'"
+        action: 'hide'
+      - condition: "settings:cinder_nimble.no_backends.value == '2'"
+        action: 'hide'
+  nimble3_backend_label:
+    value: '' 
+    label: 'Nimble Backend #3'
+    description: 'Details for Nimble Backend #3'
+    weight: 47 
+    type: "radio"
+    restrictions:
+      - condition: "settings:cinder_nimble.no_backends.value == '1'"
+        action: 'hide'
+      - condition: "settings:cinder_nimble.no_backends.value == '2'"
+        action: 'hide'
+  nimble3_backend_name:
+    value: 'cinder_nimble3'
+    label: 'Backend Name'
+    description: '"volume_backend_name" for Nimble storage backend in cinder'
+    weight: 48 
+    type: "text"
+    restrictions:
+      - condition: "settings:cinder_nimble.no_backends.value == '1'"
+        action: 'hide'
+      - condition: "settings:cinder_nimble.no_backends.value == '2'"
+        action: 'hide'
+      - condition: "settings:cinder_nimble.nimble_grouping.value == true"
+        action: 'hide'
+  nimble3_backend_type:
+    value: 'cinder_nimble3'
+    label: 'Backend Type'
+    description: 'Type for Nimble storage backend in cinder'
+    weight: 49
+    type: "text"
+    restrictions:
+      - condition: "settings:cinder_nimble.no_backends.value == '1'"
+        action: 'hide'
+      - condition: "settings:cinder_nimble.no_backends.value == '2'"
+        action: 'hide'
+      - condition: "settings:cinder_nimble.nimble_grouping.value == true"
+        action: 'hide'
+  nimble3_default_backend:
+    type: 'checkbox'
+    value: false 
+    weight: 50 
+    label: 'Set as Default Type?'
+    description: 'Set the Nimble backend #3 as the default type' 
+    restrictions:
+      - condition: "settings:cinder_nimble.no_backends.value == '1'"
+        action: 'hide'
+      - condition: "settings:cinder_nimble.no_backends.value == '2'"
+        action: 'hide'
+      - condition: "settings:cinder_nimble.nimble_grouping.value == true"
+        action: 'hide'
+      - condition: "settings:cinder_nimble.nimble1_default_backend.value == true"
+        action: 'disable'
+        message: "Backend #1 is selected as default type."
+      - condition: "settings:cinder_nimble.nimble2_default_backend.value == true"
+        action: 'disable'
+        message: "Backend #2 is selected as default type."
+  nimble3_backend_protocol:
+    value: 'iSCSI'
+    values:
+        - data: "iSCSI"
+          label: "iSCSI"
+          description: "Enables iSCSI protocol for block storage volumes"
+        - data: "FC"
+          label: "Fibre Channel"
+          description: "Enables Fibre Channel protocol for block storage volumes"
+    label: 'Storage Protocol to be used with Nimble Array Backend'
+    description: ''
+    weight: 51 
+    type: "radio"
+    restrictions:
+      - condition: "settings:cinder_nimble.no_backends.value == '1'"
+        action: 'hide'
+      - condition: "settings:cinder_nimble.no_backends.value == '2'"
+        action: 'hide'
+  nimble3_san_ip:
+    value: ""
+    label: 'Nimble Storage Management IP (san_ip)'
+    description: 'The hostname (or IP address) for Nimble Storage Management'
+    weight: 52 
+    type: "text"
+    regex:
+      source: '^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$'
+      error: "Error: Enter in regular IP address dot notation"
+    restrictions:
+      - condition: "settings:cinder_nimble.no_backends.value == '1'"
+        action: 'hide'
+      - condition: "settings:cinder_nimble.no_backends.value == '2'"
+        action: 'hide'
+  nimble3_login:
+    value: ""
+    type: "text"
+    weight: 53 
+    label: "User ID for Nimble Storage"
+    description: "Nimble Storage username/ID (with admin privilages)"
+    regex:
+      source: '^(?!\s*$).+'
+      error: "Error: Username/ID cannot be blank"
+    restrictions:
+      - condition: "settings:cinder_nimble.no_backends.value == '1'"
+        action: 'hide'
+      - condition: "settings:cinder_nimble.no_backends.value == '2'"
+        action: 'hide'
+  nimble3_password:
+    value: ""
+    type: "password"
+    weight: 54 
+    label: "Password for Nimble Storage"
+    description: "Nimble Storage password for username/ID above"
+    regex:
+      source: '^(?!\s*$).+'
+      error: "Error: Password cannot be blank"
+    restrictions:
+      - condition: "settings:cinder_nimble.no_backends.value == '1'"
+        action: 'hide'
+      - condition: "settings:cinder_nimble.no_backends.value == '2'"
+        action: 'hide'
+  nimble3_encryption:
+    value: false 
+    label: 'Encryption enabled?'
+    description: 'Specify if Nimble storage backend needs to be encypted'
+    weight: 55 
+    type: 'checkbox'
+    restrictions:
+      - condition: "settings:cinder_nimble.no_backends.value == '1'"
+        action: 'hide'
+      - condition: "settings:cinder_nimble.no_backends.value == '2'"
+        action: 'hide'
+      - condition: "settings:cinder_nimble.nimble_grouping.value == true"
+        action: 'hide'
+  nimble3_multi_init:
+    value: false 
+    label: 'Multi-Initiator enabled?'
+    description: 'Specify if Nimble storage multi-initiator needs to be enabled'
+    weight: 56 
+    type: 'checkbox'
+    restrictions:
+      - condition: "settings:cinder_nimble.no_backends.value == '1'"
+        action: 'hide'
+      - condition: "settings:cinder_nimble.no_backends.value == '2'"
+        action: 'hide'
+      - condition: "settings:cinder_nimble.nimble_grouping.value == true"
+        action: 'hide'
+  nimble3_perfpol:
+    value: ""
+    type: "text"
+    weight: 57 
+    label: "Performance policy name"
+    description: "Performance policy name for Nimble Storage backend"
+    restrictions:
+      - condition: "settings:cinder_nimble.no_backends.value == '1'"
+        action: 'hide'
+      - condition: "settings:cinder_nimble.no_backends.value == '2'"
+        action: 'hide'
+      - condition: "settings:cinder_nimble.nimble_grouping.value == true"
+        action: 'hide'
+      - condition: "settings:cinder_nimble.nimble3_perfpol.value == ''"
+        message: "Performance policy cannot be unset by setting this field blank. Old value will be retained. Delete extra spec value manually if needed."
+        action: 'none'
+  nimble4_backend_divider:
+    value: '' 
+    label: "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"
+    description: ''
+    weight: 58 
+    type: "hidden"
+    restrictions:
+      - condition: "settings:cinder_nimble.no_backends.value == '1'"
+        action: 'hide'
+      - condition: "settings:cinder_nimble.no_backends.value == '2'"
+        action: 'hide'
+      - condition: "settings:cinder_nimble.no_backends.value == '3'"
+        action: 'hide'

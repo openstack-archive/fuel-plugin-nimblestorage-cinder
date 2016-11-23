@@ -1,0 +1,36 @@
+# Plugin name
+name: cinder_nimble 
+# Human-readable name for your plugin
+title: Cinder plugin for Nimble storage 
+# Plugin version
+version: '1.0.0'
+# Description
+description: Enables Nimble storage as a backend for Cinder volumes 
+# Required fuel version
+fuel_version: ['9.0']
+
+# Specify license of your plugin
+licenses: ['Apache License Version 2.0']
+# Specify author or company name
+authors: ['Nimble']
+# A link to the plugin's page
+homepage: 'https://github.com/openstack/fuel-plugin-cinder-nimble'
+
+# Specify a group which your plugin implements, possible options:
+# network, storage, storage::cinder, storage::glance, hypervisor,
+# equipment
+groups: ['storage::cinder']
+# Change `false` to `true` if the plugin can be installed in the environment
+# after the deployment.
+is_hotpluggable: true 
+
+# The plugin is compatible with releases in the list
+releases:
+  - os: ubuntu
+    version: mitaka-9.0
+    mode: ['ha']
+    deployment_scripts_path: deployment_scripts/
+    repository_path: repositories/ubuntu
+
+# Version of plugin package
+package_version: '4.0.0'

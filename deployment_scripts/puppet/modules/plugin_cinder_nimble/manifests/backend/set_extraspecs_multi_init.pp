@@ -1,0 +1,11 @@
+class plugin_cinder_nimble::backend::set_extraspecs_multi_init (
+) {
+  $storage_hash    = hiera_hash('storage', {})
+  $nimble_multi_init    = $storage_hash['nimble_multi_init']
+  $available_backend_names   = keys($nimble_multi_init)
+  ::osnailyfacter::openstack::manage_cinder_types { $available_backend_names:
+    ensure               => 'present',
+    volume_backend_names => $nimble_multi_init,
+    key                  => 'nimble:multi-initiator'
+  }
+}
