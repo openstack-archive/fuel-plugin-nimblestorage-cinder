@@ -24,26 +24,32 @@ attributes:
 # Grouping selection
   nimble_grouping:
     value: false
-    label: 'Group all backends to the same volume type?'
-    description: 'Specify if all Nimble storage backends needs to be grouped to a volume type'
+    label: 'Group all backends to same volume_backend_name'
+    description: 'Specify if all Nimble Storage backends needs to be grouped to a volume type'
     weight: 12 
     type: 'checkbox'
 # Group Backend details
   nimble_group_backend_name:
     value: 'cinder_nimble'
     label: 'Group Backend Name'
-    description: '"volume_backend_name: for Nimble storage backends group in cinder'
+    description: '"volume_backend_name: for Nimble Storage backends group in cinder'
     weight: 13
     type: "text"
+    regex:
+      source: '^(?!\s*$).+'
+      error: 'Error: "volume_backend_name" cannot be blank'
     restrictions:
       - condition: "settings:cinder_nimble.nimble_grouping.value == false"
         action: 'hide'
   nimble_group_backend_type:
     value: 'cinder_nimble'
-    label: 'Group Backend Type'
-    description: 'Type for Nimble storage backends group in cinder'
+    label: 'Group Volume Type Name'
+    description: 'Volume Type for Nimble Storage backends group in cinder'
     weight: 14
     type: "text"
+    regex:
+      source: '^(?!\s*$).+'
+      error: 'Error: Volume Type Name cannot be blank'
     restrictions:
       - condition: "settings:cinder_nimble.nimble_grouping.value == false"
         action: 'hide'
@@ -59,7 +65,7 @@ attributes:
   nimble_group_encryption:
     value: false 
     label: 'Encryption enabled?'
-    description: 'Specify if Nimble storage backends needs to be encypted'
+    description: 'Specify if Nimble Storage backends needs to be encypted'
     weight: 16
     type: 'checkbox'
     restrictions:
@@ -68,7 +74,7 @@ attributes:
   nimble_group_multi_init:
     value: false 
     label: 'Multi-Initiator enabled?'
-    description: 'Specify if Nimble storage multi-initiator needs to be enabled'
+    description: 'Specify if Nimble Storage multi-initiator needs to be enabled'
     weight: 17
     type: 'checkbox'
     restrictions:
@@ -102,18 +108,24 @@ attributes:
   nimble1_backend_name:
     value: 'cinder_nimble1'
     label: 'Backend Name'
-    description: '"volume_backend_name" for Nimble storage backend in cinder'
+    description: '"volume_backend_name" for Nimble Storage backend in cinder'
     weight: 22
     type: "text"
+    regex:
+      source: '^(?!\s*$).+'
+      error: 'Error: "volume_backend_name" cannot be blank'
     restrictions:
       - condition: "settings:cinder_nimble.nimble_grouping.value == true"
         action: 'hide'
   nimble1_backend_type:
     value: 'cinder_nimble1'
-    label: 'Backend Type'
-    description: 'Type for Nimble storage backend in cinder'
+    label: 'Volume Type Name'
+    description: 'Volume Type for Nimble Storage backend in cinder'
     weight: 23
     type: "text"
+    regex:
+      source: '^(?!\s*$).+'
+      error: 'Error: Volume Type Name cannot be blank'
     restrictions:
       - condition: "settings:cinder_nimble.nimble_grouping.value == true"
         action: 'hide'
@@ -153,13 +165,13 @@ attributes:
     type: "radio"
   nimble1_san_ip:
     value: ""
-    label: 'Nimble Storage Management IP (san_ip)'
-    description: 'The hostname (or IP address) for Nimble Storage Management'
+    label: 'Nimble Storage Management IP'
+    description: 'The hostname (or IP address) for Nimble Storage Management IP'
     weight: 26
     type: "text"
     regex:
-      source: '^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$'
-      error: "Error: Enter in regular IP address dot notation"
+      source: '^(?!\s*$).+'
+      error: "Error: Enter in regular IP notation or host name"
   nimble1_login:
     value: ""
     type: "text"
@@ -181,7 +193,7 @@ attributes:
   nimble1_encryption:
     value: false 
     label: 'Encryption enabled?'
-    description: 'Specify if Nimble storage backend needs to be encypted'
+    description: 'Specify if Nimble Storage backend needs to be encypted'
     weight: 29
     type: 'checkbox'
     restrictions:
@@ -190,7 +202,7 @@ attributes:
   nimble1_multi_init:
     value: false 
     label: 'Multi-Initiator enabled?'
-    description: 'Specify if Nimble storage multi-initiator needs to be enabled'
+    description: 'Specify if Nimble Storage multi-initiator needs to be enabled'
     weight: 30
     type: 'checkbox'
     restrictions:
@@ -229,9 +241,12 @@ attributes:
   nimble2_backend_name:
     value: 'cinder_nimble2'
     label: 'Backend Name'
-    description: '"volume_backend_name" for Nimble storage backend in cinder'
+    description: '"volume_backend_name" for Nimble Storage backend in cinder'
     weight: 35 
     type: "text"
+    regex:
+      source: '^(?!\s*$).+'
+      error: 'Error: "volume_backend_name" cannot be blank'
     restrictions:
       - condition: "settings:cinder_nimble.no_backends.value == '1'"
         action: 'hide'
@@ -239,10 +254,13 @@ attributes:
         action: 'hide'
   nimble2_backend_type:
     value: 'cinder_nimble2'
-    label: 'Backend Type'
-    description: 'Type for Nimble storage backend in cinder'
+    label: 'Volume Type Name'
+    description: 'Volume Type for Nimble Storage backend in cinder'
     weight: 36
     type: "text"
+    regex:
+      source: '^(?!\s*$).+'
+      error: 'Error: Volume Type Name cannot be blank'
     restrictions:
       - condition: "settings:cinder_nimble.no_backends.value == '1'"
         action: 'hide'
@@ -280,7 +298,7 @@ attributes:
         - data: "FC"
           label: "Fibre Channel"
           description: "Enables Fibre Channel protocol for block storage volumes"
-    label: 'Storage Protocol to be used with Nimble Array Backend'
+    label: 'Nimble Storage Protocol'
     description: ''
     weight: 38 
     type: "radio"
@@ -289,13 +307,13 @@ attributes:
         action: 'hide'
   nimble2_san_ip:
     value: ""
-    label: 'Nimble Storage Management IP (san_ip)'
-    description: 'The hostname (or IP address) for Nimble Storage Management'
+    label: 'Nimble Storage Management IP'
+    description: 'The hostname (or IP address) for Nimble Storage Management IP'
     weight: 39
     type: "text"
     regex:
-      source: '^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$'
-      error: "Error: Enter in regular IP address dot notation"
+      source: '^(?!\s*$).+'
+      error: "Error: Enter in regular IP notation or host name"
     restrictions:
       - condition: "settings:cinder_nimble.no_backends.value == '1'"
         action: 'hide'
@@ -326,7 +344,7 @@ attributes:
   nimble2_encryption:
     value: false 
     label: 'Encryption enabled?'
-    description: 'Specify if Nimble storage backend needs to be encypted'
+    description: 'Specify if Nimble Storage backend needs to be encypted'
     weight: 42
     type: 'checkbox'
     restrictions:
@@ -337,7 +355,7 @@ attributes:
   nimble2_multi_init:
     value: false 
     label: 'Multi-Initiator enabled?'
-    description: 'Specify if Nimble storage multi-initiator needs to be enabled'
+    description: 'Specify if Nimble Storage multi-initiator needs to be enabled'
     weight: 43
     type: 'checkbox'
     restrictions:
@@ -350,7 +368,7 @@ attributes:
     type: "text"
     weight: 44
     label: "Performance policy name"
-    description: "Performance policy name for Nimble storage backend"
+    description: "Performance policy name for Nimble Storage backend"
     restrictions:
       - condition: "settings:cinder_nimble.no_backends.value == '1'"
         action: 'hide'
@@ -384,9 +402,12 @@ attributes:
   nimble3_backend_name:
     value: 'cinder_nimble3'
     label: 'Backend Name'
-    description: '"volume_backend_name" for Nimble storage backend in cinder'
+    description: '"volume_backend_name" for Nimble Storage backend in cinder'
     weight: 48 
     type: "text"
+    regex:
+      source: '^(?!\s*$).+'
+      error: 'Error: "volume_backend_name" cannot be blank'
     restrictions:
       - condition: "settings:cinder_nimble.no_backends.value == '1'"
         action: 'hide'
@@ -396,10 +417,13 @@ attributes:
         action: 'hide'
   nimble3_backend_type:
     value: 'cinder_nimble3'
-    label: 'Backend Type'
-    description: 'Type for Nimble storage backend in cinder'
+    label: 'Volume Type Name'
+    description: 'Volume Type for Nimble Storage backend in cinder'
     weight: 49
     type: "text"
+    regex:
+      source: '^(?!\s*$).+'
+      error: 'Error: Volume Type Name cannot be blank'
     restrictions:
       - condition: "settings:cinder_nimble.no_backends.value == '1'"
         action: 'hide'
@@ -452,13 +476,13 @@ attributes:
         action: 'hide'
   nimble3_san_ip:
     value: ""
-    label: 'Nimble Storage Management IP (san_ip)'
-    description: 'The hostname (or IP address) for Nimble Storage Management'
+    label: 'Nimble Storage Management IP'
+    description: 'The hostname (or IP address) for Nimble Storage Management IP'
     weight: 52 
     type: "text"
     regex:
-      source: '^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$'
-      error: "Error: Enter in regular IP address dot notation"
+      source: '^(?!\s*$).+'
+      error: "Error: Enter in regular IP notation or host name"
     restrictions:
       - condition: "settings:cinder_nimble.no_backends.value == '1'"
         action: 'hide'
@@ -495,7 +519,7 @@ attributes:
   nimble3_encryption:
     value: false 
     label: 'Encryption enabled?'
-    description: 'Specify if Nimble storage backend needs to be encypted'
+    description: 'Specify if Nimble Storage backend needs to be encypted'
     weight: 55 
     type: 'checkbox'
     restrictions:
@@ -508,7 +532,7 @@ attributes:
   nimble3_multi_init:
     value: false 
     label: 'Multi-Initiator enabled?'
-    description: 'Specify if Nimble storage multi-initiator needs to be enabled'
+    description: 'Specify if Nimble Storage multi-initiator needs to be enabled'
     weight: 56 
     type: 'checkbox'
     restrictions:
@@ -563,9 +587,12 @@ attributes:
   nimble4_backend_name:
     value: 'cinder_nimble4'
     label: 'Backend Name'
-    description: '"volume_backend_name" for Nimble storage backend in cinder'
+    description: '"volume_backend_name" for Nimble Storage backend in cinder'
     weight: 61 
     type: "text"
+    regex:
+      source: '^(?!\s*$).+'
+      error: 'Error: "volume_backend_name" cannot be blank'
     restrictions:
       - condition: "settings:cinder_nimble.no_backends.value == '1'"
         action: 'hide'
@@ -577,10 +604,13 @@ attributes:
         action: 'hide'
   nimble4_backend_type:
     value: 'cinder_nimble4'
-    label: 'Backend Type'
-    description: 'Type for Nimble storage backend in cinder'
+    label: 'Volume Type Name'
+    description: 'Volume Type for Nimble Storage backend in cinder'
     weight: 62 
     type: "text"
+    regex:
+      source: '^(?!\s*$).+'
+      error: 'Error: Volume Type Name cannot be blank'
     restrictions:
       - condition: "settings:cinder_nimble.no_backends.value == '1'"
         action: 'hide'
@@ -639,13 +669,13 @@ attributes:
         action: 'hide'
   nimble4_san_ip:
     value: ""
-    label: 'Nimble Storage Management IP (san_ip)'
-    description: 'The hostname (or IP address) for Nimble Storage Management'
+    label: 'Nimble Storage Management IP'
+    description: 'The hostname (or IP address) for Nimble Storage Management IP'
     weight: 65 
     type: "text"
     regex:
-      source: '^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$'
-      error: "Error: Enter in regular IP address dot notation"
+      source: '^(?!\s*$).+'
+      error: "Error: Enter in regular IP notation or host name"
     restrictions:
       - condition: "settings:cinder_nimble.no_backends.value == '1'"
         action: 'hide'
@@ -688,7 +718,7 @@ attributes:
   nimble4_encryption:
     value: false 
     label: 'Encryption enabled?'
-    description: 'Specify if Nimble storage backend needs to be encypted'
+    description: 'Specify if Nimble Storage backend needs to be encypted'
     weight: 68 
     type: 'checkbox'
     restrictions:
@@ -703,7 +733,7 @@ attributes:
   nimble4_multi_init:
     value: false 
     label: 'Multi-Initiator enabled?'
-    description: 'Specify if Nimble storage multi-initiator needs to be enabled'
+    description: 'Specify if Nimble Storage multi-initiator needs to be enabled'
     weight: 69 
     type: 'checkbox'
     restrictions:
@@ -766,9 +796,12 @@ attributes:
   nimble5_backend_name:
     value: 'cinder_nimble5'
     label: 'Backend Name'
-    description: '"volume_backend_name" for Nimble storage backend in cinder'
+    description: '"volume_backend_name" for Nimble Storage backend in cinder'
     weight: 74 
     type: "text"
+    regex:
+      source: '^(?!\s*$).+'
+      error: 'Error: "volume_backend_name" cannot be blank'
     restrictions:
       - condition: "settings:cinder_nimble.no_backends.value == '1'"
         action: 'hide'
@@ -782,10 +815,13 @@ attributes:
         action: 'hide'
   nimble5_backend_type:
     value: 'cinder_nimble5'
-    label: 'Backend Type'
-    description: 'Type for Nimble storage backend in cinder'
+    label: 'Volume Type Name'
+    description: 'Volume Type for Nimble Storage backend in cinder'
     weight: 75 
     type: "text"
+    regex:
+      source: '^(?!\s*$).+'
+      error: 'Error: Volume Type Name cannot be blank'
     restrictions:
       - condition: "settings:cinder_nimble.no_backends.value == '1'"
         action: 'hide'
@@ -850,13 +886,13 @@ attributes:
         action: 'hide'
   nimble5_san_ip:
     value: ""
-    label: 'Nimble Storage Management IP (san_ip)'
-    description: 'The hostname (or IP address) for Nimble Storage Management'
+    label: 'Nimble Storage Management IP'
+    description: 'The hostname (or IP address) for Nimble Storage Management IP'
     weight: 78 
     type: "text"
     regex:
-      source: '^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$'
-      error: "Error: Enter in regular IP address dot notation"
+      source: '^(?!\s*$).+'
+      error: "Error: Enter in regular IP notation or host name"
     restrictions:
       - condition: "settings:cinder_nimble.no_backends.value == '1'"
         action: 'hide'
@@ -905,7 +941,7 @@ attributes:
   nimble5_encryption:
     value: false 
     label: 'Encryption enabled?'
-    description: 'Specify if Nimble storage backend needs to be encypted'
+    description: 'Specify if Nimble Storage backend needs to be encypted'
     weight: 81 
     type: 'checkbox'
     restrictions:
@@ -922,7 +958,7 @@ attributes:
   nimble5_multi_init:
     value: false 
     label: 'Multi-Initiator enabled?'
-    description: 'Specify if Nimble storage multi-initiator needs to be enabled'
+    description: 'Specify if Nimble Storage multi-initiator needs to be enabled'
     weight: 82 
     type: 'checkbox'
     restrictions:

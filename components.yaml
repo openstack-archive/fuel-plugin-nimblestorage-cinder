@@ -5,6 +5,8 @@
 # - https://specs.openstack.org/openstack/fuel-specs/specs/8.0/component-registry.html
 
 - name: 'storage:block:backend:cinder'
+  label: "Nimble Storage"
+  description: "This enables Nimble block storage backend for Cinder volumes"
   compatible:
     - name: storage:block:lvm
     - name: hypervisor:qemu
@@ -12,11 +14,8 @@
     - name: network:neutron:core:ml2
     - name: network:neutron:ml2:vlan
     - name: network:neutron:ml2:tun
-  requires: []
   incompatible:
     - name: storage:block:ceph
     - name: storage:object:ceph
     - name: storage:ephemeral:ceph
     - name: storage:image:ceph
-  label: "Nimble Storage"
-  description: "This enables Nimble block storage backend for Cinder volumes"

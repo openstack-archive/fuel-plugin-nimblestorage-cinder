@@ -1,11 +1,11 @@
 # Plugin name
 name: cinder_nimble 
 # Human-readable name for your plugin
-title: Cinder plugin for Nimble storage 
+title: Cinder plugin for Nimble Storage
 # Plugin version
 version: '1.0.0'
 # Description
-description: Enables Nimble storage as a backend for Cinder volumes 
+description: Enables Nimble Storage as a backend for Cinder volumes
 # Required fuel version
 fuel_version: ['9.0']
 
