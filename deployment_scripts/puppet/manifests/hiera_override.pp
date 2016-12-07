@@ -20,7 +20,7 @@ $range_array = range("1", $no_backends)
 if ($cinder_nimble['nimble_grouping']) == true {
 $content = inline_template('
 storage:
-  nimble_volume_backend_names:
+  volume_backend_names:
     <%= @cinder_nimble["nimble_group_backend_type"] %>: <%= @cinder_nimble["nimble_group_backend_name"] %>
   nimble_encryption:
     <%= @cinder_nimble["nimble_group_backend_type"] %>: <%= @cinder_nimble["nimble_group_encryption"] -%>
@@ -35,7 +35,7 @@ storage:
 else {
 $content = inline_template('
 storage:
-  nimble_volume_backend_names:
+  volume_backend_names:
 <% @range_array.each do |i| -%>
     <%= @cinder_nimble["nimble#{i}_backend_type"] %>: <%= @cinder_nimble["nimble#{i}_backend_name"] %>
 <% end %>
