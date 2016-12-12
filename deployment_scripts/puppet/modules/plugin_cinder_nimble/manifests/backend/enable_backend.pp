@@ -12,6 +12,6 @@ define plugin_cinder_nimble::backend::enable_backend (
     setting              => 'enabled_backends',
     subsetting           => $name,
     subsetting_separator => ',',
-    use_exact_match      => true,	
+    use_exact_match      => true,
   }
 }

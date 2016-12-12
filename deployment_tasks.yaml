@@ -86,13 +86,13 @@
 # Post Deployment tasks
 
 # Set the default volume type to the nimble type in <default_volume_type> parameter
-- id: disable_default_type 
+- id: disable_default_type
   role: [primary-controller, controller]
   required_for: [post_deployment_end]
   requires: [post_deployment_start]
   type: puppet
   parameters:
-    puppet_manifest: puppet/manifests/disable_default_type.pp 
+    puppet_manifest: puppet/manifests/disable_default_type.pp
     puppet_modules:  "puppet/modules/:/etc/puppet/modules/"
     timeout: 360
 
