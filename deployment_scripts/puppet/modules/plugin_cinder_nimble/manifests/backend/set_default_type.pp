@@ -1,3 +1,5 @@
+# set_default_type.pp
+
 class plugin_cinder_nimble::backend::set_default_type (
   $config_file,
   $nimble_backend_type
@@ -7,12 +9,12 @@ class plugin_cinder_nimble::backend::set_default_type (
   include cinder::params
 
   ini_subsetting {"set_default_type_${nimble_backend_type}":
-    ensure               => present,
-    section              => 'DEFAULT',
-    key_val_separator    => '=',
-    path                 => $config_file,
-    setting              => 'default_volume_type',
-    subsetting           => $nimble_backend_type,
+    ensure            => present,
+    section           => 'DEFAULT',
+    key_val_separator => '=',
+    path              => $config_file,
+    setting           => 'default_volume_type',
+    subsetting        => $nimble_backend_type,
   }
 
   Cinder_config<||> ~> Service['cinder-api']

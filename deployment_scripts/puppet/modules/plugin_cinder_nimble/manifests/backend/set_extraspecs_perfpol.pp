@@ -1,3 +1,5 @@
+# set_extraspecs_perfpol.pp
+
 class plugin_cinder_nimble::backend::set_extraspecs_perfpol (
 ) {
   $storage_hash    = hiera_hash('storage', {})

@@ -13,7 +13,7 @@ file { $hiera_dir:
   ensure => directory,
 }
 
-$range_array = range("1", $no_backends)
+$range_array = range('1', $no_backends)
 
 # Create content based on grouping flag.
 # This is separated to keep the inline content and conditions tidy.

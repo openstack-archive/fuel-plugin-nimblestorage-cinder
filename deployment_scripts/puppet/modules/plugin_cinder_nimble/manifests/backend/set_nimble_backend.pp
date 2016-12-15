@@ -1,6 +1,7 @@
+# set_nimble_backend.pp
+
 define plugin_cinder_nimble::backend::set_nimble_backend (
   $backend_id,
-  $index,
   $cinder_nimble = $plugin_cinder_nimble::params::cinder_nimble,
   $config_file = $plugin_cinder_nimble::params::config_file
 ) {
@@ -35,16 +36,16 @@ define plugin_cinder_nimble::backend::set_nimble_backend (
     else {
       $nimble_backend_name = "${nimble_group_backend_name}_${backend_id}"
     }
-    $nimble_volume_backend_name = "${nimble_group_backend_name}"
+    $nimble_volume_backend_name = $nimble_group_backend_name
   }
   else {
     if ($cinder_nimble["nimble${backend_id}_cinder_service_name"]) != '' {
       $nimble_backend_name = $cinder_nimble["nimble${backend_id}_cinder_service_name"]
     }
     else {
-      $nimble_backend_name = "${cinder_nimble["nimble${backend_id}_backend_name"]}"
+      $nimble_backend_name = $cinder_nimble["nimble${backend_id}_backend_name"]
     }
-    $nimble_volume_backend_name = "${cinder_nimble["nimble${backend_id}_backend_name"]}"
+    $nimble_volume_backend_name = $cinder_nimble["nimble${backend_id}_backend_name"]
   }
   # Pool name selection
   if ($cinder_nimble["nimble${backend_id}_pool_name"]) != '' {
@@ -58,23 +59,23 @@ define plugin_cinder_nimble::backend::set_nimble_backend (
   Cinder_config <||> ~> Service <||>
 
   cinder_config {
-    "$nimble_backend_name/volume_backend_name":             value => $nimble_volume_backend_name;
-    "$nimble_backend_name/volume_driver":                   value => $nimble_cinder_driver;
-    "$nimble_backend_name/san_ip":                          value => $cinder_nimble["nimble${backend_id}_san_ip"];
-    "$nimble_backend_name/san_login":                       value => $cinder_nimble["nimble${backend_id}_login"];
-    "$nimble_backend_name/san_password":                    value => $nimble_password;
-    "$nimble_backend_name/nimble_pool_name":                value => $nimble_pool_name;
-    "$nimble_backend_name/use_multipath_for_image_xfer":    value => $cinder_nimble["nimble${backend_id}_mp_img_xfer"];
+    "${nimble_backend_name}/volume_backend_name":             value => $nimble_volume_backend_name;
+    "${nimble_backend_name}/volume_driver":                   value => $nimble_cinder_driver;
+    "${nimble_backend_name}/san_ip":                          value => $cinder_nimble["nimble${backend_id}_san_ip"];
+    "${nimble_backend_name}/san_login":                       value => $cinder_nimble["nimble${backend_id}_login"];
+    "${nimble_backend_name}/san_password":                    value => $nimble_password;
+    "${nimble_backend_name}/nimble_pool_name":                value => $nimble_pool_name;
+    "${nimble_backend_name}/use_multipath_for_image_xfer":    value => $cinder_nimble["nimble${backend_id}_mp_img_xfer"];
   }
 
   # nimble_subnet_label enabled only when iSCSI and non-nil!
   if (($cinder_nimble["nimble${backend_id}_subnet_label"]) != '') and (($cinder_nimble["nimble${backend_id}_backend_protocol"]) == 'iSCSI'){
-    cinder_config { "$nimble_backend_name/nimble_subnet_label":
+    cinder_config { "${nimble_backend_name}/nimble_subnet_label":
       value => $cinder_nimble["nimble${backend_id}_subnet_label"],
     }
   }
   else {
-    cinder_config { "$nimble_backend_name/nimble_subnet_label":
+    cinder_config { "${nimble_backend_name}/nimble_subnet_label":
       ensure => absent,
     }
   }

@@ -1,3 +1,5 @@
+# set_extraspecs_multi_init.pp
+
 class plugin_cinder_nimble::backend::set_extraspecs_multi_init (
 ) {
   $storage_hash    = hiera_hash('storage', {})

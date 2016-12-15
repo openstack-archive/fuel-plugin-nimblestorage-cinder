@@ -1,3 +1,5 @@
+# enable_backend.pp
+
 define plugin_cinder_nimble::backend::enable_backend (
   $config_file = $plugin_cinder_nimble::params::config_file
 ) {

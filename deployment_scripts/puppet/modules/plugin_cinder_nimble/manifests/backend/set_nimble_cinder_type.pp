@@ -1,3 +1,5 @@
+# set_nimble_cinder_type.pp
+
 class plugin_cinder_nimble::backend::set_nimble_cinder_type (
 ) {
   $storage_hash    = hiera_hash('storage', {})

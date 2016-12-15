@@ -1,3 +1,5 @@
+# set_extraspecs_encryption.pp
+
 class plugin_cinder_nimble::backend::set_extraspecs_encryption (
 ) {
   $storage_hash         = hiera_hash('storage', {})

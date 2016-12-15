@@ -1,3 +1,5 @@
+# params.pp
+
 class plugin_cinder_nimble::params (
 ) {
 
