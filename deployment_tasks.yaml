@@ -91,6 +91,7 @@
   required_for: [post_deployment_end]
   requires: [post_deployment_start]
   type: puppet
+  version: 3.0.0
   parameters:
     puppet_manifest: puppet/manifests/disable_default_type.pp
     puppet_modules:  "puppet/modules/:/etc/puppet/modules/"
@@ -101,6 +102,7 @@
   required_for: [post_deployment_end]
   requires: [disable_default_type]
   type: puppet
+  version: 3.0.0
   parameters:
     puppet_manifest: puppet/manifests/default_type.pp
     puppet_modules:  "puppet/modules/:/etc/puppet/modules/"
@@ -111,6 +113,7 @@
   required_for: [post_deployment_end]
   requires: [set_default_type]
   type: puppet
+  version: 3.0.0
   parameters:
     puppet_manifest: puppet/manifests/extraspecs_encryption.pp
     puppet_modules:  "puppet/modules/:/etc/puppet/modules/"
@@ -121,6 +124,7 @@
   required_for: [post_deployment_end]
   requires: [set_default_type]
   type: puppet
+  version: 3.0.0
   parameters:
     puppet_manifest: puppet/manifests/extraspecs_perfpol.pp
     puppet_modules:  "puppet/modules/:/etc/puppet/modules/"
@@ -131,6 +135,7 @@
   required_for: [post_deployment_end]
   requires: [set_default_type]
   type: puppet
+  version: 3.0.0
   parameters:
     puppet_manifest: puppet/manifests/extraspecs_multi_init.pp
     puppet_modules:  "puppet/modules/:/etc/puppet/modules/"
