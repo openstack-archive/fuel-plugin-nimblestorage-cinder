@@ -109,7 +109,7 @@
     timeout: 360
 
 - id: configure_nimblestorage_extraspecs_encryption
-  role: [primary-controller, controller]
+  role: [primary-controller]
   required_for: [post_deployment_end]
   requires: [set_default_type]
   type: puppet
@@ -120,7 +120,7 @@
     timeout: 360
 
 - id: configure_nimblestorage_extraspecs_perfpol
-  role: [primary-controller, controller]
+  role: [primary-controller]
   required_for: [post_deployment_end]
   requires: [set_default_type]
   type: puppet
@@ -131,7 +131,7 @@
     timeout: 360
 
 - id: configure_nimblestorage_extraspecs_multi_init
-  role: [primary-controller, controller]
+  role: [primary-controller]
   required_for: [post_deployment_end]
   requires: [set_default_type]
   type: puppet
